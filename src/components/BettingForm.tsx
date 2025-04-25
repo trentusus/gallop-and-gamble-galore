@@ -7,7 +7,7 @@ interface BettingFormProps {
   race: Race;
   horse: Horse;
   betType: BetType;
-  onPlaceBet: (bet: Bet) => void;
+  onPlaceBet: (bet: Bet, x: number, y: number) => void;
   onCancel: () => void;
 }
 
@@ -53,7 +53,7 @@ const BettingForm: React.FC<BettingFormProps> = ({
       potentialWinnings: potentialWinnings
     };
 
-    onPlaceBet(bet);
+    onPlaceBet(bet, e.clientX, e.clientY);
   };
 
   return (
@@ -104,12 +104,35 @@ const BettingForm: React.FC<BettingFormProps> = ({
         </div>
         
         <div className="flex space-x-4">
-          <button
-            type="submit"
-            className="bg-racing-green hover:bg-green-800 text-white font-bold py-2 px-4 rounded w-full transition-colors"
-          >
-            Place Bet
-          </button>
+        <button
+          type="button" // prevent form submission from triggering default behavior
+          onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+            if (!isLoggedIn) {
+              setShowLoginModal(true);
+              return;
+            }
+            if (stake <= 0) return;
+
+            const bet: Bet = {
+              id: Date.now(),
+              raceId: race.id,
+              raceName: race.name,
+              horseId: horse.id,
+              horseName: horse.name,
+              stake: stake,
+              odds: odds,
+              betType: betType,
+              potentialWinnings: potentialWinnings
+            };
+            const x = e.clientX;
+            const y = e.clientY;
+
+            onPlaceBet(bet, x, y);
+          }}
+          className="bg-racing-green hover:bg-green-800 text-white font-bold py-2 px-4 rounded w-full transition-colors"
+        >
+          Place Bet
+        </button>
           <button
             type="button"
             onClick={onCancel}

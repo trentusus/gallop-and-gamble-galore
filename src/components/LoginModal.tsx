@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useAuth } from '@/contexts/AuthContext';
+import { trackPageView } from '@snowplow/browser-tracker';
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -21,6 +22,19 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
     login();
     onClose();
   };
+
+  React.useEffect(() => {
+    if (isOpen) {
+      trackPageView({
+        context: [{
+          schema: 'iglu:com.snplow.sales.aws/horse_race_screen/jsonschema/1-1-0',
+          data: {
+            screen: "LOGIN"
+          }
+        }]
+      });
+    }
+  }, [isOpen]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

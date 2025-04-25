@@ -1,5 +1,6 @@
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { setUserId } from '@snowplow/browser-tracker';
 
 interface AuthContextType {
   isLoggedIn: boolean;
@@ -20,6 +21,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       email: "johnsmith@gmail.com",
       name: "John Smith"
     });
+
+    setUserId('johnsmith@gmail.com');
   };
 
   const logout = () => {

@@ -7,11 +7,19 @@ import Sidebar from '../components/Sidebar';
 import RaceDetails from '../components/RaceDetails';
 import BettingForm from '../components/BettingForm';
 import BetSlip from '../components/BetSlip';
+import { trackHorseRaceBet, createHorseRaceBet, createClickCoordinates } from '../snowtype/snowplow.ts';
+import { trackPageView } from '@snowplow/browser-tracker';
 
 enum AppState {
   VIEWING_RACES,
   PLACING_BET,
   BET_CONFIRMED
+}
+
+enum AppStateStrings {
+  VIEWING_RACES = 'VIEWING_RACES',
+  PLACING_BET = 'PLACING_BET',
+  BET_CONFIRMED = 'BET_CONFIRMED'
 }
 
 const Index = () => {
@@ -28,6 +36,14 @@ const Index = () => {
     setSelectedHorse(null);
     setSelectedBetType(null);
     setAppState(AppState.VIEWING_RACES);
+    trackPageView({
+      context: [{
+        schema: 'iglu:com.snplow.sales.aws/horse_race_screen/jsonschema/1-1-0',
+        data: {
+          screen_name: AppStateStrings.VIEWING_RACES
+        }
+      }]
+    });
   };
 
   // Handle horse and bet type selection
@@ -35,12 +51,52 @@ const Index = () => {
     setSelectedHorse(horse);
     setSelectedBetType(betType);
     setAppState(AppState.PLACING_BET);
+    trackPageView({
+      context: [{
+        schema: 'iglu:com.snplow.sales.aws/horse_race_screen/jsonschema/1-1-0',
+        data: {
+          screen_name: AppStateStrings.PLACING_BET
+        }
+      }]
+    });
   };
 
   // Handle bet placement
-  const handlePlaceBet = (bet: Bet) => {
+  const handlePlaceBet = (bet: Bet, clickX: number, clickY: number) => {
+    const horse_bet = createHorseRaceBet({
+      bet_type: selectedBetType,
+      horse: selectedHorse.name,
+      jockey: selectedHorse.jockey,
+      trainer: selectedHorse.trainer,
+      race_name: selectedRace.name,
+      race_location: selectedRace.venue,
+      //convert selectedRace.distance string to number
+      race_distance: parseInt(selectedRace.distance),
+      // convert selectedRace.startTime string to Date
+      race_start_time: new Date(selectedRace.startTime),
+      place_odds: selectedHorse.placeOdds,
+      win_odds: selectedHorse.winOdds,
+    });
+    
+    const clickCoordinates = createClickCoordinates({
+      x: clickX,
+      y: clickY,
+    });
+  
+    trackHorseRaceBet({
+      context: [horse_bet, clickCoordinates]
+    });
+
     setPlacedBet(bet);
     setAppState(AppState.BET_CONFIRMED);
+    trackPageView({
+      context: [{
+        schema: 'iglu:com.snplow.sales.aws/horse_race_screen/jsonschema/1-1-0',
+        data: {
+          screen_name: AppStateStrings.BET_CONFIRMED
+        }
+      }]
+    });
   };
 
   // Handle cancellation of bet
@@ -48,6 +104,14 @@ const Index = () => {
     setSelectedHorse(null);
     setSelectedBetType(null);
     setAppState(AppState.VIEWING_RACES);
+    trackPageView({
+      context: [{
+        schema: 'iglu:com.snplow.sales.aws/horse_race_screen/jsonschema/1-1-0',
+        data: {
+          screen_name: AppStateStrings.VIEWING_RACES
+        }
+      }]
+    });
   };
 
   // Handle back to home from bet confirmation
@@ -56,6 +120,14 @@ const Index = () => {
     setSelectedBetType(null);
     setPlacedBet(null);
     setAppState(AppState.VIEWING_RACES);
+    trackPageView({
+      context: [{
+        schema: 'iglu:com.snplow.sales.aws/horse_race_screen/jsonschema/1-1-0',
+        data: {
+          screen_name: AppStateStrings.VIEWING_RACES
+        }
+      }]
+    });
   };
 
   // Render main content based on app state

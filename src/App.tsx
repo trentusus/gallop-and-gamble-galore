@@ -7,8 +7,20 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import { newTracker, trackPageView } from '@snowplow/browser-tracker';
 
 const queryClient = new QueryClient();
+// https://com-snplow-sales-aws-prod1.mini.snplow.net
+// https://collector-sales-aws.snowplow.io
+function initializeSnowplow() {
+  newTracker('sp', 'https://collector-sales-aws.snowplow.io', {
+    appId: 'se-demo-gaming',
+    platform: 'web',
+    cookieDomain: null,
+  });
+}
+
+initializeSnowplow();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
