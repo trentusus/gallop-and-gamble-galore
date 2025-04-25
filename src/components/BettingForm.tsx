@@ -1,6 +1,7 @@
-
 import React, { useState } from 'react';
 import { Race, Horse, BetType, Bet } from '../types';
+import { useAuth } from '@/contexts/AuthContext';
+import LoginModal from './LoginModal';
 
 interface BettingFormProps {
   race: Race;
@@ -17,6 +18,8 @@ const BettingForm: React.FC<BettingFormProps> = ({
   onPlaceBet, 
   onCancel 
 }) => {
+  const { isLoggedIn } = useAuth();
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const [stake, setStake] = useState<number>(10);
   const odds = betType === 'win' ? horse.winOdds : horse.placeOdds;
   const potentialWinnings = stake * odds;
@@ -32,10 +35,14 @@ const BettingForm: React.FC<BettingFormProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isLoggedIn) {
+      setShowLoginModal(true);
+      return;
+    }
     if (stake <= 0) return;
 
     const bet: Bet = {
-      id: Date.now(), // Simple id generation for demo
+      id: Date.now(),
       raceId: race.id,
       raceName: race.name,
       horseId: horse.id,
@@ -112,6 +119,10 @@ const BettingForm: React.FC<BettingFormProps> = ({
           </button>
         </div>
       </form>
+      <LoginModal 
+        isOpen={showLoginModal} 
+        onClose={() => setShowLoginModal(false)} 
+      />
     </div>
   );
 };
