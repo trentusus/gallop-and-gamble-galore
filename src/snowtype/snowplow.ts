@@ -21,6 +21,10 @@ export type ClickCoordinates = {
  */
 export type HorseRaceBet = {
     /**
+     * Amount of money wagered in the bet
+     */
+    bet_amount?: number | null;
+    /**
      * Type of bet placed on the horse
      */
     bet_type?: BetType;
@@ -44,6 +48,10 @@ export type HorseRaceBet = {
      * Odds for the horse to place
      */
     place_odds?: number | null;
+    /**
+     * Amount the bettor could win if successful
+     */
+    potential_winnings?: number | null;
     /**
      * Distance of the race in meters
      */
@@ -90,7 +98,7 @@ export type HorseRaceScreen = {
 /**
  * The screen or view the user is currently on within the horse race experience.
  */
-export type ScreenName = "VIEWING_RACES" | "PLACING_BET" | "BET_CONFIRMED";
+export type ScreenName = "VIEWING_RACES" | "PLACING_BET" | "BET_CONFIRMED" | "LOGIN";
 
 
 type ContextsOrTimestamp<T = any> = Omit<CommonEventProperties<T>, 'context'> & { context?: SelfDescribingJson<T>[] | null | undefined }
@@ -128,7 +136,7 @@ export function createClickCoordinates(clickCoordinates: ClickCoordinates){
 export function trackHorseRaceBet<T extends {} = any>(horseRaceBet: HorseRaceBet & ContextsOrTimestamp<T>, trackers?: string[]){
     const { context, timestamp, ...data } = horseRaceBet;
     const event: SelfDescribingJson = {
-        schema: 'iglu:com.snplow.sales.aws/horse_race_bet/jsonschema/1-1-0',
+        schema: 'iglu:com.snplow.sales.aws/horse_race_bet/jsonschema/1-2-0',
         data
     };
 
@@ -144,7 +152,7 @@ export function trackHorseRaceBet<T extends {} = any>(horseRaceBet: HorseRaceBet
  */
 export function createHorseRaceBet(horseRaceBet: HorseRaceBet){
     return {
-        schema: 'iglu:com.snplow.sales.aws/horse_race_bet/jsonschema/1-1-0',
+        schema: 'iglu:com.snplow.sales.aws/horse_race_bet/jsonschema/1-2-0',
         data: horseRaceBet
     }
 }
@@ -155,7 +163,7 @@ export function createHorseRaceBet(horseRaceBet: HorseRaceBet){
 export function trackHorseRaceScreen<T extends {} = any>(horseRaceScreen: HorseRaceScreen & ContextsOrTimestamp<T>, trackers?: string[]){
     const { context, timestamp, ...data } = horseRaceScreen;
     const event: SelfDescribingJson = {
-        schema: 'iglu:com.snplow.sales.aws/horse_race_screen/jsonschema/1-0-0',
+        schema: 'iglu:com.snplow.sales.aws/horse_race_screen/jsonschema/1-1-0',
         data
     };
 
@@ -171,7 +179,7 @@ export function trackHorseRaceScreen<T extends {} = any>(horseRaceScreen: HorseR
  */
 export function createHorseRaceScreen(horseRaceScreen: HorseRaceScreen){
     return {
-        schema: 'iglu:com.snplow.sales.aws/horse_race_screen/jsonschema/1-0-0',
+        schema: 'iglu:com.snplow.sales.aws/horse_race_screen/jsonschema/1-1-0',
         data: horseRaceScreen
     }
 }

@@ -70,12 +70,16 @@ const Index = () => {
       trainer: selectedHorse.trainer,
       race_name: selectedRace.name,
       race_location: selectedRace.venue,
-      //convert selectedRace.distance string to number
+      // convert selectedRace.distance string to number
       race_distance: parseInt(selectedRace.distance),
       // convert selectedRace.startTime string to Date
       race_start_time: new Date(selectedRace.startTime),
       place_odds: selectedHorse.placeOdds,
       win_odds: selectedHorse.winOdds,
+      horse_age: selectedHorse.age,
+      horse_weight: selectedHorse.weight,
+      bet_amount: bet.stake,
+      potential_winnings: bet.potentialWinnings
     });
     
     const clickCoordinates = createClickCoordinates({
