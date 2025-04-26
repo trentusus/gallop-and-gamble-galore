@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import { newTracker, trackPageView } from '@snowplow/browser-tracker';
+import { newTracker, enableActivityTracking } from '@snowplow/browser-tracker';
 
 
 const queryClient = new QueryClient();
@@ -19,7 +19,14 @@ function initializeSnowplow() {
     platform: 'web',
     cookieDomain: null,
   });
+
+  enableActivityTracking({
+    minimumVisitLength: 5, 
+    heartbeatDelay: 5
+  });
 }
+
+
 
 initializeSnowplow();
 

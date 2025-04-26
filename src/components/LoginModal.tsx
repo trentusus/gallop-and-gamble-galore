@@ -27,7 +27,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
     if (isOpen) {
       trackPageView({
         context: [{
-          schema: 'iglu:com.snplow.sales.aws/horse_race_screen/jsonschema/1-1-0',
+          schema: 'iglu:com.snplow.sales.aws/horse_race_screen/jsonschema/1-2-0',
           data: {
             screen: "LOGIN"
           }

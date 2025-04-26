@@ -2,6 +2,14 @@ import React, { useState } from 'react';
 import { Race, Horse, BetType, Bet } from '../types';
 import { useAuth } from '@/contexts/AuthContext';
 import LoginModal from './LoginModal';
+import { useEffect } from 'react';
+import { trackPageView } from '@snowplow/browser-tracker';
+
+enum AppStateStrings {
+  VIEWING_RACES = 'VIEWING_RACES',
+  PLACING_BET = 'PLACING_BET',
+  BET_CONFIRMED = 'BET_CONFIRMED'
+}
 
 interface BettingFormProps {
   race: Race;
@@ -23,6 +31,21 @@ const BettingForm: React.FC<BettingFormProps> = ({
   const [stake, setStake] = useState<number>(10);
   const odds = betType === 'win' ? horse.winOdds : horse.placeOdds;
   const potentialWinnings = stake * odds;
+
+  useEffect(() => {
+    trackPageView({
+      context: [{
+        schema: 'iglu:com.snplow.sales.aws/horse_race_screen/jsonschema/1-2-0',
+        data: {
+          screen_name: AppStateStrings.PLACING_BET,
+          race_name: race.name,
+          race_location: race.venue,
+          race_distance: parseInt(race.distance),
+          race_start_time: new Date(race.startTime)
+        }
+      }]
+    });
+  }, []);
 
   const handleStakeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value);
