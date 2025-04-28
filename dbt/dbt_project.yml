@@ -1,0 +1,77 @@
+
+# Name your project! Project names should contain only lowercase characters
+# and underscores. A good package name should reflect your organization's
+# name or the intended use of these models
+name: 'my_new_project'
+version: '1.0.0'
+config-version: 2
+
+# This setting configures which "profile" dbt uses for this project.
+profile: 'databricks'
+
+dispatch:
+  - macro_namespace: dbt
+    search_order: ['snowplow_utils', 'dbt']
+
+# These configurations specify where dbt should look for different types of files.
+# The `source-paths` config, for example, states that models in this project can be
+# found in the "models/" directory. You probably won't need to change these!
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"  # directory which will store compiled SQL files
+clean-targets:         # directories to be removed by `dbt clean`
+  - "target"
+  - "dbt_packages"
+
+
+vars:
+  snowplow_unified:
+    # Configuration: https://docs.snowplow.io/docs/modeling-your-data/modeling-your-data-with-dbt/dbt-configuration/unified/
+    # snowplow__atomic_schema: rt_pipeline_prod1
+    snowplow__databricks_catalog: snowplow_samples
+    #snowplow__database: lake_loader
+    snowplow__atomic_schema: stream_loader
+    snowplow__events_table: events
+    snowplow__start_date: '2025-04-25'
+    snowplow__enable_ua: true
+    snowplow__enable_yauaa: true
+    snowplow__enable_iab: true
+    snowplow__derived_tstamp_partitioned: false
+    snowplow__min_visit_length: 5
+    snowplow__heartbeat: 5
+    snowplow__backfill_limit_days: 90
+    snowplow__app_id: ['se-demo-gaming']
+    snowplow__enable_conversions: true
+    #snowplow__conversion_stitching: true
+    snowplow__view_passthroughs: [
+      {
+        'sql': 'contexts_com_snplow_sales_aws_horse_race_screen_1[0].screen_name', 
+        'alias': 'screen_name'
+      },
+            {
+        'sql': 'contexts_com_snplow_sales_aws_horse_race_screen_1[0].race_name', 
+        'alias': 'race_name'
+      },
+      {
+        'sql': 'contexts_com_snplow_sales_aws_horse_race_screen_1[0].race_location', 
+        'alias': 'race_location'
+      }
+    ]
+    snowplow__conversion_events: [
+      {
+          "name": "horse_race_bet",
+          "condition": "event_name = 'horse_race_bet'",
+          "value": 'contexts_com_snplow_sales_aws_horse_race_bet_1[0].bet_amount',
+          "default_value": 0,
+          "list_events": true
+      }
+    ]
+
+
+# Configuring models
+# Full documentation: https://docs.getdbt.com/docs/configuring-models

@@ -1,0 +1,11 @@
+databricks:
+  outputs:
+    prod:
+      type: databricks
+      catalog: snowplow_samples
+      schema: se_demo_gaming
+      host: dbc-dcab5385-51e3.cloud.databricks.com
+      http_path: /sql/1.0/warehouses/a67a0ac2d9efd255
+      token: "{{ env_var('DATABRICKS_DEMO_DATAMODELING_PASSWORD') }}"
+      threads: 1  # optional, default 1
+  target: prod
