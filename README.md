@@ -1,73 +1,142 @@
-# Welcome to your Lovable project
+# Gallop and Gamble Galore
 
-## Project info
+Welcome to **Gallop and Gamble Galore** — a Snowplow Sales Engineering Demo application built with **Lovable**, showcasing behavioral data tracking, modeling, and fraud detection capabilities.
 
-**URL**: https://lovable.dev/projects/40c2c38a-33a5-4456-b6a7-148f7d59fe4f
+---
+
+## Project links
+
+- **Web application**: [Lovable Project](https://lovable.dev/projects/40c2c38a-33a5-4456-b6a7-148f7d59fe4f)
+- **GitHub repository**: [View on GitHub](https://github.com/trentusus/gallop-and-gamble-galore)
+- **Data product**: [Snowplow Console Data Product](https://console.snowplowanalytics.com/b12539df-a711-42bd-bdfa-175308c55fd5/data-products/abecc3d9-dab3-4500-a1b8-d4db8854b0c9)
+
+---
+
+## Demo resources
+
+- **Demo guide and talk track**: [View the document](https://docs.google.com/document/d/1G-WmR8TR4UVr5dezznSgeKCEBpbH9PqVfar7GE2mR9g/edit?tab=t.0)
+- **Presentation recording**: [Watch on Gong](https://us-15499.app.gong.io/call?id=4631541662640845937)
+
+---
 
 ## How can I edit this code?
 
-There are several ways of editing your application.
+You can modify the application in several ways:
 
-**Use Lovable**
+### **Use Lovable**
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/40c2c38a-33a5-4456-b6a7-148f7d59fe4f) and start prompting.
+Go to the [Lovable Project](https://lovable.dev/projects/40c2c38a-33a5-4456-b6a7-148f7d59fe4f) and start prompting.  
+Changes made through Lovable are automatically committed to this repository.
 
-Changes made via Lovable will be committed automatically to this repo.
+### **Use your preferred IDE**
 
-**Use your preferred IDE**
+To work locally using your own IDE:
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+1. Clone the repository:
+   ```sh
+   git clone <YOUR_GIT_URL>
+   ```
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+2. Navigate to the project folder:
+   ```sh
+   cd <YOUR_PROJECT_NAME>
+   ```
 
-Follow these steps:
+3. Install dependencies:
+   ```sh
+   npm i
+   ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+4. Start the development server:
+   ```sh
+   npm run dev
+   ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+Make sure Node.js and npm are installed. You can use [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) to install Node.js.
 
-# Step 3: Install the necessary dependencies.
-npm i
+### **Edit directly on GitHub**
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+- Open the file you want to edit
+- Click the **"Edit"** (pencil) icon
+- Make your changes and commit
 
-**Edit a file directly in GitHub**
+### **Use GitHub Codespaces**
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- Go to the repository’s main page
+- Click **"Code"**, then **"Codespaces"**
+- Create a new codespace
+- Edit files and commit changes in-browser
 
-**Use GitHub Codespaces**
+---
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Tech stack
 
-## What technologies are used for this project?
+This application uses:
 
-This project is built with:
+- **Vite**
+- **TypeScript**
+- **React**
+- **shadcn-ui**
+- **Tailwind CSS**
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+---
 
-## How can I deploy this project?
+## How to deploy
 
-Simply open [Lovable](https://lovable.dev/projects/40c2c38a-33a5-4456-b6a7-148f7d59fe4f) and click on Share -> Publish.
+To publish the app:
 
-## Can I connect a custom domain to my Lovable project?
+1. Open [Lovable](https://lovable.dev/projects/40c2c38a-33a5-4456-b6a7-148f7d59fe4f)
+2. Click **"Share"**
+3. Click **"Publish"**
 
-Yes it is!
+---
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## Connect a custom domain
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+To link a custom domain:
+
+1. Go to **Project > Settings > Domains**
+2. Click **"Connect Domain"**
+
+For full guidance, see [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+
+---
+
+## Snowplow tracking overview
+
+This demo app integrates Snowplow to demonstrate behavioral tracking, conversion modeling, and fraud detection in a web-based betting scenario.
+
+### Use cases
+
+- **User journey tracking**: Visualize user navigation and engagement
+- **Conversion analysis**: Analyze when and how users place bets, including total wagered amounts
+- **Fraud detection**:
+  - Repeated identical screen clicks indicating automated activity
+  - Abnormally fast or slow bet placements as possible fraud signals
+
+### Tracking scenario
+
+1. User visits the site
+2. User browses and places a bet
+
+Snowplow captures:
+- **Standard events**
+- **Custom Entities**: `race`, `bet`
+- **Modeled data**: Passed through the **unified model**
+
+### Snowplow features in use
+
+- **Data Products**
+- **Snowtype**
+- **Snowplow Unified Digital dbt model for Databricks**
+- **Unified model passthroughs**
+- **Session-based conversion modeling**
+
+---
+
+## Future additions
+
+Planned enhancements include:
+
+- Banner ads
+- Marketing affiliate tracking
